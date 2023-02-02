@@ -1,16 +1,16 @@
-import axios from "axios";
-import React, { useEffect, useMemo, useState, CSSProperties } from "react";
+import React, { useEffect, useState } from "react";
+
 import LocationTable from "./components/LocationTable";
 import Select from "./components/UI/Select";
-import { useLocations } from "./hooks/useLocations";
-import { useFetch } from "./hooks/useFetch";
-import { usePagination } from "./hooks/usePagination";
-import "./styles/App.scss";
+import Pagination from "./components/UI/Pagination";
 import ClipLoader from "react-spinners/ClipLoader";
 
+import { useLocations } from "./hooks/useLocations";
+import { useFetch } from "./hooks/useFetch";
 import LocationsService from "./API/LocationsService";
 import { getPagesCount } from "./utils/pages";
-import Pagination from "./components/UI/Pagination";
+
+import "./styles/App.scss";
 
 function App() {
   const [locations, setLocations] = useState([]);
@@ -37,11 +37,9 @@ function App() {
         //const response = await LocationsService.getMultipleLocations(limit, page);
         //setLocations(response.data);
         const totalLocations = response.data.results.length;
-        console.log(response);
         setTotalPages(getPagesCount(totalLocations, limit));
-        console.log(totalLocations, "---", limit);
         setIsLoading(false);
-      }, 1000);
+      }, 1500);
     }
   );
 
@@ -53,27 +51,16 @@ function App() {
     setPage(page);
     setLimit(limit);
     setTotalPages(getPagesCount(locations.length, limit));
-    console.log(totalPages, page, "---", limit);
-  };
-
-  const override = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "0 auto",
   };
 
   return (
     <>
-      {isLoading ? (
-        <ClipLoader
-          color={"#d36969"}
-          loading={isLoading}
-          cssOverride={override}
-          size={150}
-        />
-      ) : (
-        <div className="App">
+      <div className="App">
+        {isLoading ? (
+          <div>
+            <ClipLoader color={"#d36969"} loading={isLoading} size={150} />
+          </div>
+        ) : (
           <div>
             <div className="filters">
               <Select
@@ -88,7 +75,11 @@ function App() {
               />
               <Select
                 value={limit}
-                onChange={(value) => setLimit(value)}
+                onChange={(limit) => {
+                  setLimit(limit);
+                  setTotalPages(getPagesCount(locations.length, limit));
+                  setPage(1);
+                }}
                 defaultValue={"Items/page:"}
                 options={[
                   { value: 5, name: "5" },
@@ -98,18 +89,19 @@ function App() {
               />
             </div>
             {locationsError && <div>ERROR: {locationsError}</div>}
-            <LocationTable locations={showLocations} />
-            {locations > limit && (
-              <Pagination
-                onChange={changePage}
-                page={page}
-                totalPages={totalPages}
-                limit={limit}
-              />
-            )}
+            <LocationTable
+              onClick={(sort) => setSelectedSort(sort)}
+              locations={showLocations}
+            />
+            <Pagination
+              onChange={changePage}
+              page={page}
+              totalPages={totalPages}
+              limit={limit}
+            />
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }

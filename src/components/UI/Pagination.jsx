@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { usePagination } from "../../hooks/usePagination";
+import { getPagesArray } from "../../utils/pages";
 import "../../styles/App.scss";
 
 const Pagination = ({ page, onChange, totalPages, limit }) => {
-  let pagesArray = usePagination([], totalPages);
+  let pagesArray = getPagesArray(totalPages);
+
   return (
     <div className="pagination">
       {pagesArray.map((p) => (
