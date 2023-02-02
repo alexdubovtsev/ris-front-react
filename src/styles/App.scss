@@ -1,0 +1,117 @@
+@import "nullstyle";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+$fontFamily: "Montserrat";
+$fontSize: rem(18);
+
+$mainColor: #000;
+$color-white: #fff;
+$color-red: #d36969;
+$color-silver: rgba(192, 192, 192, 0.849);
+
+body {
+  font-family: $fontFamily;
+  font-size: $fontSize; 
+  color: $mainColor;
+  background: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  padding: 40px;
+}
+
+.App {
+  padding: 40px 25px;
+  background-color: $color-white;
+  border-radius: 10px;
+  max-width: 1300px;
+}
+
+
+.filters {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  Select {
+    border: 1px solid $color-silver;
+    padding: 5px;
+  }
+}
+
+.location {
+  &__items {border: 1px solid $color-silver;}
+  &__row, &__titles {
+    text-align: center;
+    display: grid;
+    align-items: center;
+    // grid-auto-flow: column;
+    grid-template-columns: 25px repeat(3, 150px) 1fr 200px;
+  }
+  &__row {
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-silver;
+    }
+  }
+  &__titles {
+    height: 40px;
+    background-color: $color-silver;
+    p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid $mainColor;
+      border-bottom: 1px solid $mainColor;
+      border-left: 1px solid $mainColor;
+      cursor: pointer;
+      &:last-child {
+        border-right: 1px solid $mainColor;
+      }
+      height: 100%;
+    }
+  }
+  &__id, &__name, &__type, &__dimension, &__created {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border-right: 1px solid $color-silver;
+  }
+  &__created {border-right: none}
+
+  &__residents {
+    height: 120px;
+    overflow: auto;
+    border-right: 1px solid $color-silver;
+    padding: 10px;
+    text-align: left;
+  }
+}
+
+
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  &__number {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+    border: 2px solid $color-silver;
+    border-radius: 50%;
+    transition: all 0.4s ease 0s;
+    &._active {
+      border: 2px solid $color-red;;
+    }
+  }
+}
